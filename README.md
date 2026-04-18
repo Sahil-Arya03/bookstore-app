@@ -159,10 +159,4 @@ Tests cover:
 - `OrderServiceTest` — Order placement, stock management, cancellation
 - `AuthServiceTest` — Registration, login, duplicate email prevention
 
-## 📸 Screenshots
 
-> Add screenshots of the application UI here.
-
-## 📄 License
-
-This project is created for educational purposes.
