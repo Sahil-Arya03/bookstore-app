@@ -43,9 +43,9 @@ function Checkout() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
-      
+
       {error && <div className="bg-red-100 text-red-700 p-3 mb-4 rounded">{error}</div>}
-      
+
       <div className="bg-white p-6 border rounded mb-6">
         <h2 className="text-xl font-bold mb-4">Summary</h2>
         <div className="border-b pb-4 mb-4">

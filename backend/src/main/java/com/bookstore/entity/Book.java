@@ -6,10 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Book entity representing a book in the bookstore inventory.
- * Contains full metadata including pricing, stock, and category association.
- */
 @Entity
 @Table(name = "books")
 public class Book {
@@ -73,10 +69,8 @@ public class Book {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Constructors
     public Book() {}
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

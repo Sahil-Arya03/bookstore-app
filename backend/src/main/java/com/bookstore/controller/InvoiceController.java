@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * REST controller for invoice retrieval operations.
- */
 @RestController
 @RequestMapping("/api/invoices")
 @Tag(name = "Invoices", description = "Invoice retrieval endpoints")
@@ -23,9 +20,6 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
-    /**
-     * Get all invoices (ADMIN only).
-     */
     @GetMapping
     @Operation(summary = "Get all invoices (ADMIN)", description = "Returns all invoices in the system")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Invoices retrieved")})
@@ -33,9 +27,6 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.getAllInvoices());
     }
 
-    /**
-     * Get the invoice for a specific order.
-     */
     @GetMapping("/{orderId}")
     @Operation(summary = "Get invoice by order ID", description = "Returns the invoice for a specific order")
     @ApiResponses({

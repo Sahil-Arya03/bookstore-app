@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service handling user profile management operations.
- */
 @Service
 public class UserService {
 
@@ -30,10 +27,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * Get all users (admin only).
-     * @return list of UserResponse DTOs
-     */
     public List<UserResponse> getAllUsers() {
         log.debug("Entering getAllUsers");
         return userRepository.findAll().stream()
@@ -41,11 +34,6 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get a user's profile by email.
-     * @param email the user's email
-     * @return UserResponse DTO
-     */
     public UserResponse getUserProfile(String email) {
         log.debug("Entering getUserProfile: email={}", email);
         User user = userRepository.findByEmail(email)
@@ -53,12 +41,6 @@ public class UserService {
         return mapToResponse(user);
     }
 
-    /**
-     * Update a user's profile.
-     * @param email the user's current email
-     * @param request the updated profile details
-     * @return updated UserResponse DTO
-     */
     @Transactional
     public UserResponse updateUserProfile(String email, UserUpdateRequest request) {
         log.debug("Entering updateUserProfile: email={}", email);
@@ -86,9 +68,6 @@ public class UserService {
         return mapToResponse(updatedUser);
     }
 
-    /**
-     * Map User entity to UserResponse DTO.
-     */
     private UserResponse mapToResponse(User user) {
         return new UserResponse(
                 user.getId(),

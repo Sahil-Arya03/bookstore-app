@@ -3,10 +3,6 @@ package com.bookstore.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * DTO for book data in API responses.
- * Includes all book fields plus the category name for display.
- */
 public class BookResponse {
 
     private Long id;
@@ -26,10 +22,8 @@ public class BookResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    // Constructors
     public BookResponse() {}
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

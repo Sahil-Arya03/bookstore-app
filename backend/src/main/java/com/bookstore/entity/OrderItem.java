@@ -3,10 +3,6 @@ package com.bookstore.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
-/**
- * OrderItem entity representing a single line item within an order.
- * Links a book to an order with quantity and pricing information.
- */
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
@@ -32,7 +28,6 @@ public class OrderItem {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    // Constructors
     public OrderItem() {}
 
     public OrderItem(Integer quantity, BigDecimal unitPrice, BigDecimal subtotal, Book book) {
@@ -42,7 +37,6 @@ public class OrderItem {
         this.book = book;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

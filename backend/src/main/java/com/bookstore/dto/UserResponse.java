@@ -2,9 +2,6 @@ package com.bookstore.dto;
 
 import java.time.LocalDateTime;
 
-/**
- * DTO for user profile data in API responses.
- */
 public class UserResponse {
 
     private Long id;
@@ -14,7 +11,6 @@ public class UserResponse {
     private String phone;
     private LocalDateTime createdAt;
 
-    // Constructors
     public UserResponse() {}
 
     public UserResponse(Long id, String name, String email, String role, String phone, LocalDateTime createdAt) {
@@ -26,7 +22,6 @@ public class UserResponse {
         this.createdAt = createdAt;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

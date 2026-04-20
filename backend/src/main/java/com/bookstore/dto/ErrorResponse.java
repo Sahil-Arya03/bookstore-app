@@ -2,16 +2,12 @@ package com.bookstore.dto;
 
 import java.time.LocalDateTime;
 
-/**
- * Standard error response DTO for consistent API error formatting.
- */
 public class ErrorResponse {
 
     private int status;
     private String message;
     private String timestamp;
 
-    // Constructors
     public ErrorResponse() {}
 
     public ErrorResponse(int status, String message) {
@@ -20,7 +16,6 @@ public class ErrorResponse {
         this.timestamp = LocalDateTime.now().toString();
     }
 
-    // Getters and Setters
     public int getStatus() { return status; }
     public void setStatus(int status) { this.status = status; }
 

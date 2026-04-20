@@ -2,9 +2,6 @@ package com.bookstore.dto;
 
 import java.math.BigDecimal;
 
-/**
- * DTO for order item data in API responses.
- */
 public class OrderItemResponse {
 
     private Long id;
@@ -15,10 +12,8 @@ public class OrderItemResponse {
     private BigDecimal unitPrice;
     private BigDecimal subtotal;
 
-    // Constructors
     public OrderItemResponse() {}
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -24,11 +24,11 @@ function Navbar() {
             <>
               <Link to="/cart" className="text-gray-600 hover:text-blue-600">Cart</Link>
               <Link to="/orders" className="text-gray-600 hover:text-blue-600">My Orders</Link>
-              
+
               {isAdmin() && (
                 <Link to="/admin" className="text-blue-600 font-medium">Admin</Link>
               )}
-              
+
               <span className="text-gray-500 text-sm ml-4 border-l pl-4">
                 {user?.name}
               </span>

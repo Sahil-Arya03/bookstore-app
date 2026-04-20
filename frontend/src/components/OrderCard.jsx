@@ -2,9 +2,6 @@ import { formatCurrency } from '../utils/formatCurrency';
 import { formatDate } from '../utils/formatDate';
 import { Link } from 'react-router-dom';
 
-/**
- * OrderCard component displaying order summary in a list.
- */
 const OrderCard = ({ order }) => {
   const statusColors = {
     PENDING: 'bg-yellow-100 text-yellow-800',

@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Category entity for organizing books into logical groups.
- * Each category can contain multiple books.
- */
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -25,7 +21,6 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 
-    // Constructors
     public Category() {}
 
     public Category(String name, String description) {
@@ -33,7 +28,6 @@ public class Category {
         this.description = description;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

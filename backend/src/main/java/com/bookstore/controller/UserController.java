@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * REST controller for user management operations.
- */
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "Users", description = "User management endpoints")
@@ -26,9 +23,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /**
-     * Get all users (ADMIN only).
-     */
     @GetMapping
     @Operation(summary = "Get all users (ADMIN)", description = "Returns all registered users")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Users retrieved")})
@@ -36,9 +30,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    /**
-     * Get the authenticated user's profile.
-     */
     @GetMapping("/profile")
     @Operation(summary = "Get my profile", description = "Returns the authenticated user's profile")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Profile retrieved")})
@@ -46,9 +37,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserProfile(authentication.getName()));
     }
 
-    /**
-     * Update the authenticated user's profile.
-     */
     @PutMapping("/profile")
     @Operation(summary = "Update my profile", description = "Update the authenticated user's profile details")
     @ApiResponses({

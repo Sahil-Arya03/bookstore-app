@@ -50,9 +50,9 @@ function BookDetail() {
           <h1 className="text-3xl font-bold mt-1 mb-2">{book.title}</h1>
           <p className="text-gray-600 mb-4">by {book.author}</p>
           <div className="text-3xl font-bold text-gray-900 mb-6">{formatCurrency(book.price)}</div>
-          
+
           <p className="text-gray-700 mb-6">{book.description || 'No description available for this book.'}</p>
-          
+
           <div className="text-sm text-gray-600 mb-6 grid grid-cols-2 gap-2">
             <div><span className="font-bold">ISBN:</span> {book.isbn || 'N/A'}</div>
             <div><span className="font-bold">Year:</span> {book.publicationYear || 'N/A'}</div>

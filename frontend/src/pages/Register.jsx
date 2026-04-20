@@ -26,7 +26,7 @@ function Register() {
     <div className="max-w-md mx-auto mt-10 p-6 bg-white border rounded shadow">
       <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
       {error && <div className="bg-red-100 text-red-700 p-3 mb-4 rounded">{error}</div>}
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div><label className="block mb-1">Name</label> <input type="text" name="name" onChange={handleChange} className="w-full border p-2 rounded" required /></div>
         <div><label className="block mb-1">Email</label> <input type="email" name="email" onChange={handleChange} className="w-full border p-2 rounded" required /></div>

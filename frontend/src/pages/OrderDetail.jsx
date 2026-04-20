@@ -27,7 +27,7 @@ function OrderDetail() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <button onClick={() => navigate(-1)} className="text-blue-600 hover:underline mb-4">&larr; Back</button>
-      
+
       <div className="bg-white p-6 border rounded mb-6">
         <h1 className="text-2xl font-bold mb-2">Order #{order.orderNumber}</h1>
         <div className="flex gap-4 text-sm mb-4">

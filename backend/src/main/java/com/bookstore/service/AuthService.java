@@ -18,10 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/**
- * Service handling user authentication including registration and login.
- * Manages JWT token generation upon successful authentication.
- */
 @Service
 public class AuthService {
 
@@ -39,12 +35,6 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    /**
-     * Register a new user with the USER role.
-     * @param request registration details
-     * @return authentication response with JWT token
-     * @throws ValidationException if email is already registered
-     */
     public AuthResponse register(RegisterRequest request) {
         log.debug("Entering register method for email: {}", request.getEmail());
 
@@ -62,7 +52,6 @@ public class AuthService {
         User savedUser = userRepository.save(user);
         log.info("User registered successfully: {}", savedUser.getEmail());
 
-        // Auto-login after registration
         UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
                 .username(savedUser.getEmail())
                 .password(savedUser.getPassword())
@@ -75,12 +64,6 @@ public class AuthService {
                 savedUser.getEmail(), savedUser.getRole().name());
     }
 
-    /**
-     * Authenticate a user and return a JWT token.
-     * @param request login credentials
-     * @return authentication response with JWT token
-     * @throws UnauthorizedException if credentials are invalid
-     */
     public AuthResponse login(LoginRequest request) {
         log.debug("Entering login method for email: {}", request.getEmail());
 

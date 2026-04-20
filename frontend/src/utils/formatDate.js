@@ -1,8 +1,3 @@
-/**
- * Format a date string or Date object to a readable format.
- * @param {string|Date} date - the date to format
- * @returns {string} formatted date string
- */
 export const formatDate = (date) => {
   if (!date) return 'N/A';
   return new Date(date).toLocaleDateString('en-US', {
@@ -14,11 +9,6 @@ export const formatDate = (date) => {
   });
 };
 
-/**
- * Format a date string to a short date format.
- * @param {string|Date} date - the date to format
- * @returns {string} formatted short date string
- */
 export const formatShortDate = (date) => {
   if (!date) return 'N/A';
   return new Date(date).toLocaleDateString('en-US', {

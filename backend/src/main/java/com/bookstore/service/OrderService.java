@@ -19,11 +19,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * The core engine behind customer purchases! This service manages the entire lifecycle
- * of an order: from the moment a user clicks "Checkout", through deducting stock,
- * generating their invoice, and managing the delivery status afterwards.
- */
 @Service
 public class OrderService {
 
@@ -43,10 +38,6 @@ public class OrderService {
 
     private static final BigDecimal TAX_RATE = new BigDecimal("0.18");
 
-    /**
-     * Get all orders (admin only).
-     * @return list of OrderResponse DTOs
-     */
     public List<OrderResponse> getAllOrders() {
         log.debug("Entering getAllOrders");
         return orderRepository.findAll().stream()
@@ -54,11 +45,6 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get all orders for a specific user.
-     * @param userId the user's ID
-     * @return list of the user's OrderResponse DTOs
-     */
     public List<OrderResponse> getOrdersByUserId(Long userId) {
         log.debug("Entering getOrdersByUserId: userId={}", userId);
         return orderRepository.findByUserIdOrderByOrderedAtDesc(userId).stream()
@@ -66,13 +52,6 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get order details by ID with access control.
-     * @param orderId the order ID
-     * @param userEmail the requesting user's email
-     * @return OrderResponse DTO
-     * @throws AccessDeniedException if the user is not the order owner or admin
-     */
     public OrderResponse getOrderById(Long orderId, String userEmail) {
         log.debug("Entering getOrderById: orderId={}", orderId);
         Order order = orderRepository.findById(orderId)
@@ -81,7 +60,6 @@ public class OrderService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", userEmail));
 
-        // Only the order owner or admin can view
         if (!order.getUser().getId().equals(user.getId()) && user.getRole() != User.Role.ADMIN) {
             throw new AccessDeniedException("You can only view your own orders");
         }
@@ -89,18 +67,6 @@ public class OrderService {
         return mapToResponse(order);
     }
 
-    /**
-     * The heart of the checkout process. When a user finalizes their cart, this method steps in to:
-     * 1. Verify we actually have enough books in stock to fulfill the request.
-     * 2. Reserve (deduct) those books from our inventory.
-     * 3. Calculate the total cost of all items combined.
-     * 4. Automatically generate a tax invoice for the purchase.
-     *
-     * @param request contains shipping info, payment choice, and the items they want
-     * @param userEmail identifies who is placing the order
-     * @return the finalized order details, ready to be displayed on the confirmation screen!
-     * @throws StockUnavailableException if a book sells out right as they try to check out
-     */
     @Transactional
     public OrderResponse placeOrder(OrderRequest request, String userEmail) {
         log.debug("Entering placeOrder for user: {}", userEmail);
@@ -121,17 +87,14 @@ public class OrderService {
             Book book = bookRepository.findById(itemRequest.getBookId())
                     .orElseThrow(() -> new ResourceNotFoundException("Book", "id", itemRequest.getBookId()));
 
-            // Check stock availability
             if (book.getStockQuantity() < itemRequest.getQuantity()) {
                 throw new StockUnavailableException(book.getTitle(),
                         itemRequest.getQuantity(), book.getStockQuantity());
             }
 
-            // Deduct stock
             book.setStockQuantity(book.getStockQuantity() - itemRequest.getQuantity());
             bookRepository.save(book);
 
-            // Create order item
             BigDecimal subtotal = book.getPrice().multiply(BigDecimal.valueOf(itemRequest.getQuantity()));
             OrderItem orderItem = new OrderItem(itemRequest.getQuantity(), book.getPrice(), subtotal, book);
             orderItem.setOrder(order);
@@ -143,7 +106,6 @@ public class OrderService {
         order.setTotalAmount(totalAmount);
         Order savedOrder = orderRepository.save(order);
 
-        // Auto-generate invoice with 18% tax
         BigDecimal tax = totalAmount.multiply(TAX_RATE).setScale(2, RoundingMode.HALF_UP);
         BigDecimal grandTotal = totalAmount.add(tax);
 
@@ -161,12 +123,6 @@ public class OrderService {
         return mapToResponse(savedOrder);
     }
 
-    /**
-     * Update the status of an order (admin only).
-     * @param orderId the order ID
-     * @param status the new status
-     * @return updated OrderResponse DTO
-     */
     @Transactional
     public OrderResponse updateOrderStatus(Long orderId, String status) {
         log.debug("Entering updateOrderStatus: orderId={}, status={}", orderId, status);
@@ -185,15 +141,6 @@ public class OrderService {
         return mapToResponse(updatedOrder);
     }
 
-    /**
-     * Handles order cancellations. When an order is cancelled, we need to make sure
-     * the physical books are returned to our "digital shelves" so other customers
-     * can buy them.
-     *
-     * @param orderId the ID of the order being cancelled
-     * @param userEmail the person attempting to cancel (to verify they own the order!)
-     * @throws AccessDeniedException if a sneaky user tries to cancel someone else's order
-     */
     @Transactional
     public void cancelOrder(Long orderId, String userEmail) {
         log.debug("Entering cancelOrder: orderId={}", orderId);
@@ -203,7 +150,6 @@ public class OrderService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", userEmail));
 
-        // Only owner or admin can cancel
         if (!order.getUser().getId().equals(user.getId()) && user.getRole() != User.Role.ADMIN) {
             throw new AccessDeniedException("You can only cancel your own orders");
         }
@@ -212,7 +158,6 @@ public class OrderService {
             throw new ValidationException("Order is already cancelled");
         }
 
-        // Restore stock quantities
         for (OrderItem item : order.getOrderItems()) {
             Book book = item.getBook();
             book.setStockQuantity(book.getStockQuantity() + item.getQuantity());
@@ -224,9 +169,6 @@ public class OrderService {
         log.info("Order cancelled: {} (User: {})", order.getOrderNumber(), userEmail);
     }
 
-    /**
-     * Map Order entity to OrderResponse DTO.
-     */
     private OrderResponse mapToResponse(Order order) {
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());
@@ -244,7 +186,6 @@ public class OrderService {
                 .collect(Collectors.toList());
         response.setOrderItems(itemResponses);
 
-        // Include invoice if available
         if (order.getInvoice() != null) {
             response.setInvoice(mapInvoiceToResponse(order.getInvoice()));
         }
@@ -252,9 +193,6 @@ public class OrderService {
         return response;
     }
 
-    /**
-     * Map OrderItem entity to OrderItemResponse DTO.
-     */
     private OrderItemResponse mapItemToResponse(OrderItem item) {
         OrderItemResponse response = new OrderItemResponse();
         response.setId(item.getId());
@@ -267,9 +205,6 @@ public class OrderService {
         return response;
     }
 
-    /**
-     * Map Invoice entity to InvoiceResponse DTO.
-     */
     private InvoiceResponse mapInvoiceToResponse(Invoice invoice) {
         InvoiceResponse response = new InvoiceResponse();
         response.setId(invoice.getId());

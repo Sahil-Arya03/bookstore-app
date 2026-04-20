@@ -16,9 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service handling category CRUD operations.
- */
 @Service
 public class CategoryService {
 
@@ -30,10 +27,6 @@ public class CategoryService {
     @Autowired
     private BookService bookService;
 
-    /**
-     * Get all categories.
-     * @return list of CategoryResponse DTOs
-     */
     public List<CategoryResponse> getAllCategories() {
         log.debug("Entering getAllCategories");
         return categoryRepository.findAll().stream()
@@ -41,11 +34,6 @@ public class CategoryService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get a category by ID, including its books.
-     * @param id the category ID
-     * @return CategoryResponse DTO with book list
-     */
     public CategoryResponse getCategoryById(Long id) {
         log.debug("Entering getCategoryById: id={}", id);
         Category category = categoryRepository.findById(id)
@@ -59,11 +47,6 @@ public class CategoryService {
         return response;
     }
 
-    /**
-     * Create a new category.
-     * @param request category details
-     * @return created CategoryResponse DTO
-     */
     @Transactional
     public CategoryResponse createCategory(CategoryRequest request) {
         log.debug("Entering createCategory: name={}", request.getName());
@@ -78,12 +61,6 @@ public class CategoryService {
         return mapToResponse(savedCategory);
     }
 
-    /**
-     * Update an existing category.
-     * @param id the category ID
-     * @param request updated category details
-     * @return updated CategoryResponse DTO
-     */
     @Transactional
     public CategoryResponse updateCategory(Long id, CategoryRequest request) {
         log.debug("Entering updateCategory: id={}", id);
@@ -101,10 +78,6 @@ public class CategoryService {
         return mapToResponse(updatedCategory);
     }
 
-    /**
-     * Delete a category by its ID.
-     * @param id the category ID
-     */
     @Transactional
     public void deleteCategory(Long id) {
         log.debug("Entering deleteCategory: id={}", id);
@@ -114,9 +87,6 @@ public class CategoryService {
         log.info("Category deleted: {} (ID: {})", category.getName(), id);
     }
 
-    /**
-     * Map Category entity to CategoryResponse DTO (without books).
-     */
     private CategoryResponse mapToResponse(Category category) {
         return new CategoryResponse(category.getId(), category.getName(), category.getDescription());
     }

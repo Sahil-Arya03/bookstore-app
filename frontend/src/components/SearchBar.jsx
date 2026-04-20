@@ -18,7 +18,7 @@ function SearchBar({ onSearch, categories, selectedCategory, onCategoryChange })
           placeholder="Search books..."
           className="flex-1 border rounded px-4 py-2"
         />
-        
+
         {categories && (
           <select
             value={selectedCategory || ''}

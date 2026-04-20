@@ -6,10 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Order entity representing a customer's purchase order.
- * Tracks status lifecycle from PENDING through DELIVERED or CANCELLED.
- */
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -47,9 +43,6 @@ public class Order {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Invoice invoice;
 
-    /**
-     * Enum representing the lifecycle status of an order.
-     */
     public enum OrderStatus {
         PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
     }
@@ -59,10 +52,8 @@ public class Order {
         this.orderedAt = LocalDateTime.now();
     }
 
-    // Constructors
     public Order() {}
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -3,9 +3,6 @@ package com.bookstore.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 
-/**
- * DTO for user profile update requests.
- */
 public class UserUpdateRequest {
 
     private String name;
@@ -18,10 +15,8 @@ public class UserUpdateRequest {
 
     private String password;
 
-    // Constructors
     public UserUpdateRequest() {}
 
-    // Getters and Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

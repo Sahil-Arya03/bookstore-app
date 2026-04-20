@@ -4,10 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * DTO for order data in API responses.
- * Includes all order details, items, and invoice information.
- */
 public class OrderResponse {
 
     private Long id;
@@ -22,10 +18,8 @@ public class OrderResponse {
     private List<OrderItemResponse> orderItems;
     private InvoiceResponse invoice;
 
-    // Constructors
     public OrderResponse() {}
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

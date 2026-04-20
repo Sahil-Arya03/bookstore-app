@@ -1,8 +1,5 @@
 package com.bookstore.dto;
 
-/**
- * DTO for authentication response containing JWT token and user info.
- */
 public class AuthResponse {
 
     private String token;
@@ -12,7 +9,6 @@ public class AuthResponse {
     private String email;
     private String role;
 
-    // Constructors
     public AuthResponse() {}
 
     public AuthResponse(String token, Long id, String name, String email, String role) {
@@ -23,7 +19,6 @@ public class AuthResponse {
         this.role = role;
     }
 
-    // Getters and Setters
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
 

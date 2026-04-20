@@ -32,7 +32,7 @@ function Cart() {
           <div className="space-y-2">
             {cart.map(item => <CartItem key={item.id} item={item} onUpdateQuantity={updateQuantity} onRemove={removeItem} />)}
           </div>
-          
+
           <div className="bg-white p-6 border rounded text-right">
             <div className="text-2xl font-bold mb-4">Total: {formatCurrency(total)}</div>
             <div className="flex justify-end gap-4">

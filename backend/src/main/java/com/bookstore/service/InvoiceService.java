@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Service handling invoice retrieval operations.
- */
 @Service
 public class InvoiceService {
 
@@ -23,10 +20,6 @@ public class InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
-    /**
-     * Get all invoices (admin only).
-     * @return list of InvoiceResponse DTOs
-     */
     public List<InvoiceResponse> getAllInvoices() {
         log.debug("Entering getAllInvoices");
         return invoiceRepository.findAll().stream()
@@ -34,11 +27,6 @@ public class InvoiceService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Get the invoice for a specific order.
-     * @param orderId the order ID
-     * @return InvoiceResponse DTO
-     */
     public InvoiceResponse getInvoiceByOrderId(Long orderId) {
         log.debug("Entering getInvoiceByOrderId: orderId={}", orderId);
         Invoice invoice = invoiceRepository.findByOrderId(orderId)
@@ -46,9 +34,6 @@ public class InvoiceService {
         return mapToResponse(invoice);
     }
 
-    /**
-     * Map Invoice entity to InvoiceResponse DTO.
-     */
     private InvoiceResponse mapToResponse(Invoice invoice) {
         InvoiceResponse response = new InvoiceResponse();
         response.setId(invoice.getId());

@@ -20,12 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Handles all the customer interactions at the checkout counter!
- * This controller takes care of customers placing new orders, checking on
- * their past purchases, and even cancelling orders if they change their minds.
- * Admin users can also use this to process and update order statuses.
- */
 @RestController
 @RequestMapping("/api/orders")
 @Tag(name = "Orders", description = "Order management endpoints")
@@ -37,9 +31,6 @@ public class OrderController {
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     * Get all orders (ADMIN only).
-     */
     @GetMapping
     @Operation(summary = "Get all orders (ADMIN)", description = "Returns all orders in the system")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Orders retrieved")})
@@ -47,9 +38,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
-    /**
-     * Get current user's orders.
-     */
     @GetMapping("/my")
     @Operation(summary = "Get my orders", description = "Returns all orders for the authenticated user")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Orders retrieved")})
@@ -59,9 +47,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrdersByUserId(user.getId()));
     }
 
-    /**
-     * Get order details by ID.
-     */
     @GetMapping("/{id}")
     @Operation(summary = "Get order by ID", description = "Returns details of a specific order")
     @ApiResponses({
@@ -73,9 +58,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(id, authentication.getName()));
     }
 
-    /**
-     * Place a new order.
-     */
     @PostMapping
     @Operation(summary = "Place an order", description = "Create a new order with items, deducts stock, generates invoice")
     @ApiResponses({
@@ -87,9 +69,6 @@ public class OrderController {
         return new ResponseEntity<>(orderService.placeOrder(request, authentication.getName()), HttpStatus.CREATED);
     }
 
-    /**
-     * Update order status (ADMIN only).
-     */
     @PutMapping("/{id}/status")
     @Operation(summary = "Update order status (ADMIN)", description = "Update the status of an order")
     @ApiResponses({
@@ -101,9 +80,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.updateOrderStatus(id, request.get("status")));
     }
 
-    /**
-     * Cancel an order.
-     */
     @DeleteMapping("/{id}")
     @Operation(summary = "Cancel an order", description = "Cancel an order and restore stock")
     @ApiResponses({

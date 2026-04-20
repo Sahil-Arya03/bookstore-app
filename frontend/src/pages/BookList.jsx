@@ -6,9 +6,6 @@ import SearchBar from '../components/SearchBar';
 import Pagination from '../components/Pagination';
 import Spinner from '../components/Spinner';
 
-/**
- * BookList page with search, category filter, and pagination.
- */
 const BookList = () => {
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);

@@ -14,11 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * This controller acts as the front door to our application!
- * It handles the welcoming process (registration) and verifying IDs (login)
- * to hand out the JWT passes. Everyone is welcome to hit these endpoints.
- */
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "User registration and login endpoints")
@@ -27,11 +22,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    /**
-     * Register a new user with the USER role.
-     * @param request registration details
-     * @return JWT token and user info
-     */
     @PostMapping("/register")
     @Operation(summary = "Register a new user", description = "Creates a new user account with USER role and returns JWT token")
     @ApiResponses({
@@ -44,11 +34,6 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    /**
-     * Authenticate a user and return a JWT token.
-     * @param request login credentials
-     * @return JWT token and user info
-     */
     @PostMapping("/login")
     @Operation(summary = "User login", description = "Authenticates user credentials and returns JWT token")
     @ApiResponses({

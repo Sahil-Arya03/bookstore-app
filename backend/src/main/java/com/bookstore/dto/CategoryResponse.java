@@ -2,10 +2,6 @@ package com.bookstore.dto;
 
 import java.util.List;
 
-/**
- * DTO for category data in API responses.
- * Optionally includes the list of books in this category.
- */
 public class CategoryResponse {
 
     private Long id;
@@ -13,7 +9,6 @@ public class CategoryResponse {
     private String description;
     private List<BookResponse> books;
 
-    // Constructors
     public CategoryResponse() {}
 
     public CategoryResponse(Long id, String name, String description) {
@@ -22,7 +17,6 @@ public class CategoryResponse {
         this.description = description;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -3,9 +3,6 @@ package com.bookstore.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-/**
- * DTO for user login/authentication requests.
- */
 public class LoginRequest {
 
     @NotBlank(message = "Email is required")
@@ -15,7 +12,6 @@ public class LoginRequest {
     @NotBlank(message = "Password is required")
     private String password;
 
-    // Constructors
     public LoginRequest() {}
 
     public LoginRequest(String email, String password) {
@@ -23,7 +19,6 @@ public class LoginRequest {
         this.password = password;
     }
 
-    // Getters and Setters
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 

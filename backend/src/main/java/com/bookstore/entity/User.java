@@ -5,10 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * User entity representing registered users of the bookstore.
- * Supports USER and ADMIN roles for role-based access control.
- */
 @Entity
 @Table(name = "users")
 public class User {
@@ -38,9 +34,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
 
-    /**
-     * Enum representing user roles in the system.
-     */
     public enum Role {
         USER, ADMIN
     }
@@ -50,7 +43,6 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
-    // Constructors
     public User() {}
 
     public User(String name, String email, String password, Role role, String phone) {
@@ -61,7 +53,6 @@ public class User {
         this.phone = phone;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

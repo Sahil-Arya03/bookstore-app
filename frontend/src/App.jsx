@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// All pages imported directly (no lazy loading for simplicity)
 import Home from './pages/Home';
 import BookList from './pages/BookList';
 import BookDetail from './pages/BookDetail';
@@ -27,7 +26,7 @@ function App() {
           <Navbar />
           <main className="flex-1">
             <Routes>
-              {/* Anyone can visit these */}
+              {}
               <Route path="/" element={<Home />} />
               <Route path="/books" element={<BookList />} />
               <Route path="/books/:id" element={<BookDetail />} />
@@ -35,12 +34,12 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/cart" element={<Cart />} />
 
-              {/* Must be logged in */}
+              {}
               <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
               <Route path="/orders" element={<ProtectedRoute><OrderList /></ProtectedRoute>} />
               <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
 
-              {/* Admin only */}
+              {}
               <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
               <Route path="/admin/books" element={<ProtectedRoute adminOnly><AdminBooks /></ProtectedRoute>} />
               <Route path="/admin/orders" element={<ProtectedRoute adminOnly><AdminOrders /></ProtectedRoute>} />

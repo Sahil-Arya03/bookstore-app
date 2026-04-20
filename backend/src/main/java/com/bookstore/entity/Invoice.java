@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * Invoice entity representing the billing document for an order.
- * Auto-generated when an order is placed, with 18% tax calculation.
- */
 @Entity
 @Table(name = "invoices")
 public class Invoice {
@@ -40,7 +36,6 @@ public class Invoice {
         this.issuedAt = LocalDateTime.now();
     }
 
-    // Constructors
     public Invoice() {}
 
     public Invoice(String invoiceNumber, BigDecimal amount, BigDecimal tax, BigDecimal grandTotal, Order order) {
@@ -51,7 +46,6 @@ public class Invoice {
         this.order = order;
     }
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

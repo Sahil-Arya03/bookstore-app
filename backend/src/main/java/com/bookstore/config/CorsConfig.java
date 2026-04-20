@@ -8,16 +8,9 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
-/**
- * CORS configuration to allow cross-origin requests from the React frontend.
- */
 @Configuration
 public class CorsConfig {
 
-    /**
-     * Configure CORS filter allowing requests from the React dev server.
-     * @return configured CorsFilter bean
-     */
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();

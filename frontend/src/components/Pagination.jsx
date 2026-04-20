@@ -1,6 +1,3 @@
-/**
- * Pagination component for navigating paginated data.
- */
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   if (totalPages <= 1) return null;
 

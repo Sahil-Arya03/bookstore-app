@@ -3,9 +3,6 @@ package com.bookstore.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-/**
- * DTO for a single order item within an order request.
- */
 public class OrderItemRequest {
 
     @NotNull(message = "Book ID is required")
@@ -15,7 +12,6 @@ public class OrderItemRequest {
     @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
 
-    // Constructors
     public OrderItemRequest() {}
 
     public OrderItemRequest(Long bookId, Integer quantity) {
@@ -23,7 +19,6 @@ public class OrderItemRequest {
         this.quantity = quantity;
     }
 
-    // Getters and Setters
     public Long getBookId() { return bookId; }
     public void setBookId(Long bookId) { this.bookId = bookId; }
 

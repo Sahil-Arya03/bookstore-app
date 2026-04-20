@@ -14,11 +14,6 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * Data seeder that populates the database with initial data on startup.
- * Creates admin/user accounts, categories, and sample books.
- * Idempotent: only runs if the users table is empty.
- */
 @Component
 public class DataSeeder implements CommandLineRunner {
 
@@ -45,7 +40,6 @@ public class DataSeeder implements CommandLineRunner {
 
         log.info("Seeding database with initial data...");
 
-        // Create Users
         User admin = new User("Admin User", "admin@bookstore.com",
                 passwordEncoder.encode("Admin@123"), User.Role.ADMIN, "1234567890");
         User user = new User("Regular User", "user@bookstore.com",
@@ -53,7 +47,6 @@ public class DataSeeder implements CommandLineRunner {
         userRepository.saveAll(List.of(admin, user));
         log.info("Created admin and regular user accounts");
 
-        // Create Categories
         Category fiction = new Category("Fiction", "Novels, short stories, and literary works of imagination");
         Category science = new Category("Science", "Books covering scientific discoveries and research");
         Category technology = new Category("Technology", "Computing, programming, and tech industry books");
@@ -62,7 +55,6 @@ public class DataSeeder implements CommandLineRunner {
         categoryRepository.saveAll(List.of(fiction, science, technology, history, selfHelp));
         log.info("Created 5 categories");
 
-        // Create Books
         Book book1 = createBook("The Great Gatsby", "F. Scott Fitzgerald", "978-0743273565",
                 "A story of the mysteriously wealthy Jay Gatsby and his love for Daisy Buchanan.",
                 new BigDecimal("12.99"), 50, 1925, "Scribner", "English", 180, fiction,
@@ -118,9 +110,6 @@ public class DataSeeder implements CommandLineRunner {
         log.info("Database seeding completed successfully!");
     }
 
-    /**
-     * Helper method to create a Book entity with all fields populated.
-     */
     private Book createBook(String title, String author, String isbn, String description,
                            BigDecimal price, int stock, int year, String publisher,
                            String language, int pages, Category category, String coverUrl) {

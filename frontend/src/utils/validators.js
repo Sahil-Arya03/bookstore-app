@@ -1,12 +1,3 @@
-/**
- * Client-side form validation utilities.
- */
-
-/**
- * Validate registration form fields.
- * @param {Object} data - { name, email, password, confirmPassword, phone }
- * @returns {Object} errors object with field-level error messages
- */
 export const validateRegistration = (data) => {
   const errors = {};
 
@@ -31,11 +22,6 @@ export const validateRegistration = (data) => {
   return errors;
 };
 
-/**
- * Validate login form fields.
- * @param {Object} data - { email, password }
- * @returns {Object} errors object with field-level error messages
- */
 export const validateLogin = (data) => {
   const errors = {};
 
@@ -49,11 +35,6 @@ export const validateLogin = (data) => {
   return errors;
 };
 
-/**
- * Validate checkout form fields.
- * @param {Object} data - { shippingAddress, paymentMethod }
- * @returns {Object} errors object with field-level error messages
- */
 export const validateCheckout = (data) => {
   const errors = {};
 
@@ -63,11 +44,6 @@ export const validateCheckout = (data) => {
   return errors;
 };
 
-/**
- * Validate book form fields.
- * @param {Object} data - book form data
- * @returns {Object} errors object with field-level error messages
- */
 export const validateBook = (data) => {
   const errors = {};
 

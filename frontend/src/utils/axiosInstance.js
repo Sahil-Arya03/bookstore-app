@@ -1,10 +1,5 @@
 import axios from 'axios';
 
-/**
- * Axios instance with base URL and interceptors for JWT authentication.
- * Request interceptor: attaches Bearer token from localStorage.
- * Response interceptor: on 401, clears token and redirects to /login.
- */
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8080',
   headers: {
@@ -12,7 +7,6 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request interceptor: attach JWT token
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -24,7 +18,6 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor: handle 401 errors
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {

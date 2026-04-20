@@ -15,10 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * REST controller for category management operations.
- * GET endpoints are public; POST/PUT/DELETE require ADMIN role.
- */
 @RestController
 @RequestMapping("/api/categories")
 @Tag(name = "Categories", description = "Category management endpoints")
@@ -27,9 +23,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    /**
-     * Get all categories.
-     */
     @GetMapping
     @Operation(summary = "List all categories", description = "Returns all book categories")
     @ApiResponses({@ApiResponse(responseCode = "200", description = "Categories retrieved")})
@@ -37,9 +30,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    /**
-     * Get a single category with its books.
-     */
     @GetMapping("/{id}")
     @Operation(summary = "Get category by ID", description = "Returns category details with its books")
     @ApiResponses({
@@ -50,9 +40,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
     }
 
-    /**
-     * Create a new category (ADMIN only).
-     */
     @PostMapping
     @Operation(summary = "Create a category (ADMIN)", description = "Add a new book category")
     @ApiResponses({
@@ -63,9 +50,6 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.createCategory(request), HttpStatus.CREATED);
     }
 
-    /**
-     * Update a category (ADMIN only).
-     */
     @PutMapping("/{id}")
     @Operation(summary = "Update a category (ADMIN)", description = "Update category details")
     @ApiResponses({
@@ -77,9 +61,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.updateCategory(id, request));
     }
 
-    /**
-     * Delete a category (ADMIN only).
-     */
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a category (ADMIN)", description = "Remove a category")
     @ApiResponses({

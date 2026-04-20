@@ -2,10 +2,6 @@ package com.bookstore.dto;
 
 import jakarta.validation.constraints.*;
 
-/**
- * DTO for user registration requests.
- * Enforces validation on all required registration fields.
- */
 public class RegisterRequest {
 
     @NotBlank(message = "Name is required")
@@ -22,7 +18,6 @@ public class RegisterRequest {
     @Pattern(regexp = "^[+]?[0-9]{10,15}$", message = "Phone number must be valid (10-15 digits)")
     private String phone;
 
-    // Constructors
     public RegisterRequest() {}
 
     public RegisterRequest(String name, String email, String password, String phone) {
@@ -32,7 +27,6 @@ public class RegisterRequest {
         this.phone = phone;
     }
 
-    // Getters and Setters
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

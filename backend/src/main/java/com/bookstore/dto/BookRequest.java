@@ -3,10 +3,6 @@ package com.bookstore.dto;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 
-/**
- * DTO for book creation and update requests.
- * All required fields are validated using JSR-303 annotations.
- */
 public class BookRequest {
 
     @NotBlank(message = "Title is required")
@@ -41,10 +37,8 @@ public class BookRequest {
     @NotNull(message = "Category ID is required")
     private Long categoryId;
 
-    // Constructors
     public BookRequest() {}
 
-    // Getters and Setters
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

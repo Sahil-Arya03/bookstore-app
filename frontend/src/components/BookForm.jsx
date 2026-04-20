@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 import { validateBook } from '../utils/validators';
 
-/**
- * BookForm component for creating and editing books.
- * Includes full validation and category selection.
- */
 const BookForm = ({ book, categories, onSubmit, onCancel, loading }) => {
   const [formData, setFormData] = useState({
     title: '', author: '', isbn: '', description: '', price: '',

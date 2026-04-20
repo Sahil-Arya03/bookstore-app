@@ -5,10 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
-/**
- * DTO for order placement requests.
- * Validates shipping address, payment method, and order items.
- */
 public class OrderRequest {
 
     @NotEmpty(message = "Order must contain at least one item")
@@ -21,7 +17,6 @@ public class OrderRequest {
     @NotBlank(message = "Payment method is required")
     private String paymentMethod;
 
-    // Constructors
     public OrderRequest() {}
 
     public OrderRequest(List<OrderItemRequest> orderItems, String shippingAddress, String paymentMethod) {
@@ -30,7 +25,6 @@ public class OrderRequest {
         this.paymentMethod = paymentMethod;
     }
 
-    // Getters and Setters
     public List<OrderItemRequest> getOrderItems() { return orderItems; }
     public void setOrderItems(List<OrderItemRequest> orderItems) { this.orderItems = orderItems; }
 

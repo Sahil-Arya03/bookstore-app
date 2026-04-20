@@ -1,8 +1,5 @@
 package com.bookstore.exception;
 
-/**
- * Exception thrown when there is insufficient stock to fulfill an order.
- */
 public class StockUnavailableException extends RuntimeException {
 
     public StockUnavailableException(String message) {

@@ -18,11 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * This service acts as the librarian of our application! It handles all the heavy lifting
- * for our book inventory, including looking up books, adding new ones, updating details,
- * and keeping track of stock levels.
- */
 @Service
 public class BookService {
 
@@ -34,15 +29,6 @@ public class BookService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    /**
-     * Browses the bookstore's collection, returning a specific "page" of books.
-     *  If a category ID is provided, it narrows down the search to just that genre.
-     *
-     * @param page which page of the catalogue to view (heads up: it's 0-indexed!)
-     * @param size how many books to display per page
-     * @param categoryId the specific genre to filter by (can be null for all books)
-     * @return a neatly packaged page of book summaries ready for the frontend
-     */
     public Page<BookResponse> getAllBooks(int page, int size, Long categoryId) {
         log.debug("Entering getAllBooks: page={}, size={}, categoryId={}", page, size, categoryId);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
@@ -57,13 +43,6 @@ public class BookService {
         return books.map(this::mapToResponse);
     }
 
-    /**
-     * Hunts down a specific book in our database using its unique database ID.
-     *
-     * @param id the unique identifier for the book you're looking for
-     * @return the full details of the book
-     * @throws ResourceNotFoundException if we check the shelves and it's simply not there
-     */
     public BookResponse getBookById(Long id) {
         log.debug("Entering getBookById: id={}", id);
         Book book = bookRepository.findById(id)
@@ -71,15 +50,6 @@ public class BookService {
         return mapToResponse(book);
     }
 
-    /**
-     * Performs a text search across our inventory. It checks book titles,
-     * author names, and even ISBN numbers to find the best match for the user's query.
-     *
-     * @param query what the user is typing into the search bar
-     * @param page which page of results to show
-     * @param size how many results per page
-     * @return a list of books that match the search term
-     */
     public Page<BookResponse> searchBooks(String query, int page, int size) {
         log.debug("Entering searchBooks: query={}", query);
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
@@ -87,15 +57,6 @@ public class BookService {
         return books.map(this::mapToResponse);
     }
 
-    /**
-     * Adds a brand new title to our bookstore's inventory!
-     * It performs a quick check to make sure we don't accidentally add the exact same
-     * physical book (via ISBN) twice.
-     *
-     * @param request the details of the new book from the admin panel
-     * @return the freshly saved book details, including its new database ID
-     * @throws ValidationException if a book with the same ISBN already lives in our system
-     */
     @Transactional
     public BookResponse createBook(BookRequest request) {
         log.debug("Entering createBook: isbn={}", request.getIsbn());
@@ -115,14 +76,6 @@ public class BookService {
         return mapToResponse(savedBook);
     }
 
-    /**
-     * Applies edits to an existing book in our system. Useful for changing prices,
-     * fixing typos in descriptions, or updating stock counts when a new shipment arrives.
-     *
-     * @param id the ID of the book being edited
-     * @param request the new details to apply
-     * @return the officially updated book details
-     */
     @Transactional
     public BookResponse updateBook(Long id, BookRequest request) {
         log.debug("Entering updateBook: id={}", id);
@@ -130,7 +83,6 @@ public class BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book", "id", id));
 
-        // Check ISBN uniqueness if changed
         if (!book.getIsbn().equals(request.getIsbn()) && bookRepository.existsByIsbn(request.getIsbn())) {
             throw new ValidationException("Book with ISBN '" + request.getIsbn() + "' already exists");
         }
@@ -145,13 +97,6 @@ public class BookService {
         return mapToResponse(updatedBook);
     }
 
-    /**
-     * Permanently removes a book from our catalogue.
-     * Note: In a real-world system, you might prefer to do a "soft delete" (mark as inactive)
-     * instead of permanently erasing it, especially if it's tied to past orders!
-     *
-     * @param id the ID of the book to remove
-     */
     @Transactional
     public void deleteBook(Long id) {
         log.debug("Entering deleteBook: id={}", id);
@@ -161,9 +106,6 @@ public class BookService {
         log.info("Book deleted successfully: {} (ID: {})", book.getTitle(), id);
     }
 
-    /**
-     * Map Book entity to BookResponse DTO.
-     */
     public BookResponse mapToResponse(Book book) {
         BookResponse response = new BookResponse();
         response.setId(book.getId());
@@ -185,9 +127,6 @@ public class BookService {
         return response;
     }
 
-    /**
-     * Map BookRequest DTO fields onto a Book entity.
-     */
     private void mapToEntity(BookRequest request, Book book, Category category) {
         book.setTitle(request.getTitle());
         book.setAuthor(request.getAuthor());

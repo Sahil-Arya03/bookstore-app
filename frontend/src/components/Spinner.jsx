@@ -1,7 +1,3 @@
-/**
- * Loading spinner component with animation.
- * @param {string} size - 'sm', 'md', or 'lg'
- */
 const Spinner = ({ size = 'md', text = 'Loading...' }) => {
   const sizes = {
     sm: 'h-6 w-6',

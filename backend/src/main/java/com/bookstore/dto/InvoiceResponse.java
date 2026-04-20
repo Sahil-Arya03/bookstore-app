@@ -3,9 +3,6 @@ package com.bookstore.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * DTO for invoice data in API responses.
- */
 public class InvoiceResponse {
 
     private Long id;
@@ -17,10 +14,8 @@ public class InvoiceResponse {
     private Long orderId;
     private String orderNumber;
 
-    // Constructors
     public InvoiceResponse() {}
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
