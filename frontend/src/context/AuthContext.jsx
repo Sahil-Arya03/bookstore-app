@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
 /**
- * AuthContext provides global authentication state management.
- * Stores JWT token and user info in localStorage for persistence.
+ * Think of this context as the bouncer for our application. 
+ * It keeps track of who is currently logged in, what their role is,
+ * and holds onto their JWT "entry pass" so they don't have to log in every time they refresh the page.
  */
 const AuthContext = createContext(null);
 
@@ -38,8 +39,11 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   /**
-   * Login: store token and user in state + localStorage.
-   * @param {Object} authResponse - response from login/register API
+   * Called when a user successfully passes the login screen.
+   * We take their new credentials and stash them safely in the browser's local storage
+   * so they stay logged in even if they close the tab.
+   * 
+   * @param {Object} authResponse - The personalized data packet sent back from our backend
    */
   const login = (authResponse) => {
     const { token, id, name, email, role } = authResponse;
@@ -51,7 +55,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   /**
-   * Logout: clear token and user from state + localStorage.
+   * When a user wants to leave, this function wipes the slate clean,
+   * removing all traces of their session credentials and their shopping cart
+   * from the browser's memory.
    */
   const logout = () => {
     setToken(null);

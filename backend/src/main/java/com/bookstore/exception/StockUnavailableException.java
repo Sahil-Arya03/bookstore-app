@@ -10,7 +10,7 @@ public class StockUnavailableException extends RuntimeException {
     }
 
     public StockUnavailableException(String bookTitle, int requested, int available) {
-        super(String.format("Insufficient stock for '%s': requested %d, available %d",
+        super(String.format("We don't have enough copies of '%s' in stock! You asked for %d, but we only have %d available right now.",
                 bookTitle, requested, available));
     }
 }

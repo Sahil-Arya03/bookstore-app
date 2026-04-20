@@ -10,6 +10,6 @@ public class ResourceNotFoundException extends RuntimeException {
     }
 
     public ResourceNotFoundException(String resourceName, String fieldName, Object fieldValue) {
-        super(String.format("%s not found with %s: '%s'", resourceName, fieldName, fieldValue));
+        super(String.format("We couldn't find the %s you're looking for with %s: '%s'. It might have been removed or deleted.", resourceName, fieldName, fieldValue));
     }
 }

@@ -20,8 +20,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
- * Service handling order processing including placement, cancellation, and status management.
- * Implements business logic for stock deduction, invoice generation, and access control.
+ * The core engine behind customer purchases! This service manages the entire lifecycle
+ * of an order: from the moment a user clicks "Checkout", through deducting stock,
+ * generating their invoice, and managing the delivery status afterwards.
  */
 @Service
 public class OrderService {
@@ -89,11 +90,16 @@ public class OrderService {
     }
 
     /**
-     * Place a new order. Deducts stock, calculates totals, and generates invoice.
-     * @param request the order details
-     * @param userEmail the ordering user's email
-     * @return created OrderResponse DTO
-     * @throws StockUnavailableException if any book has insufficient stock
+     * The heart of the checkout process. When a user finalizes their cart, this method steps in to:
+     * 1. Verify we actually have enough books in stock to fulfill the request.
+     * 2. Reserve (deduct) those books from our inventory.
+     * 3. Calculate the total cost of all items combined.
+     * 4. Automatically generate a tax invoice for the purchase.
+     *
+     * @param request contains shipping info, payment choice, and the items they want
+     * @param userEmail identifies who is placing the order
+     * @return the finalized order details, ready to be displayed on the confirmation screen!
+     * @throws StockUnavailableException if a book sells out right as they try to check out
      */
     @Transactional
     public OrderResponse placeOrder(OrderRequest request, String userEmail) {
@@ -180,10 +186,13 @@ public class OrderService {
     }
 
     /**
-     * Cancel an order. Restores stock quantities for all items.
-     * @param orderId the order ID
-     * @param userEmail the requesting user's email
-     * @throws AccessDeniedException if user is not the owner or admin
+     * Handles order cancellations. When an order is cancelled, we need to make sure
+     * the physical books are returned to our "digital shelves" so other customers
+     * can buy them.
+     *
+     * @param orderId the ID of the order being cancelled
+     * @param userEmail the person attempting to cancel (to verify they own the order!)
+     * @throws AccessDeniedException if a sneaky user tries to cancel someone else's order
      */
     @Transactional
     public void cancelOrder(Long orderId, String userEmail) {

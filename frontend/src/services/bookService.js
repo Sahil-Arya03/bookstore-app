@@ -1,7 +1,8 @@
 import axiosInstance from '../utils/axiosInstance';
 
 /**
- * Book API service.
+ * The bridge between our frontend UI and our backend bookstore database.
+ * This service handles all the raw HTTP requests to fetch or modify book data.
  */
 const bookService = {
   /** Get paginated books with optional category filter */

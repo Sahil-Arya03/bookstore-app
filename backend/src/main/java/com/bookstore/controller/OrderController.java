@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * REST controller for order management operations.
- * Handles order placement, viewing, status updates, and cancellation.
+ * Handles all the customer interactions at the checkout counter!
+ * This controller takes care of customers placing new orders, checking on
+ * their past purchases, and even cancelling orders if they change their minds.
+ * Admin users can also use this to process and update order statuses.
  */
 @RestController
 @RequestMapping("/api/orders")

@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
         log.error("Access denied: {}", ex.getMessage());
-        ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(), "Access denied");
+        ErrorResponse error = new ErrorResponse(HttpStatus.FORBIDDEN.value(), "You don't have permission to access or modify this resource.");
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthentication(AuthenticationException ex) {
         log.error("Authentication failed: {}", ex.getMessage());
-        ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Authentication failed");
+        ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Oops! Those credentials don't look quite right. Please try logging in again.");
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
@@ -109,7 +109,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
         log.error("Data integrity violation: {}", ex.getMessage());
         ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT.value(),
-                "Data integrity violation: duplicate entry or constraint violation");
+                "It looks like this information already exists in our system, or there's a conflict preventing us from saving it.");
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
@@ -120,7 +120,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         log.error("Internal server error: ", ex);
         ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "An unexpected error occurred");
+                "Uh oh! Something went wrong on our end. We're looking into it!");
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

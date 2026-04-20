@@ -15,8 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST controller for authentication operations (registration and login).
- * All endpoints are publicly accessible.
+ * This controller acts as the front door to our application!
+ * It handles the welcoming process (registration) and verifying IDs (login)
+ * to hand out the JWT passes. Everyone is welcome to hit these endpoints.
  */
 @RestController
 @RequestMapping("/api/auth")

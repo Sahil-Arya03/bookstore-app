@@ -15,8 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST controller for book management operations.
- * GET endpoints are public; POST/PUT/DELETE require ADMIN role.
+ * The public window into our bookstore's inventory!
+ * Anyone can browse the books (GET), but only users with an ADMIN badge
+ * are allowed to add, edit, or remove books from the shelves (POST/PUT/DELETE).
  */
 @RestController
 @RequestMapping("/api/books")

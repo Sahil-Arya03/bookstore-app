@@ -19,8 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service handling all book-related business logic including CRUD operations,
- * search, filtering, and stock management.
+ * This service acts as the librarian of our application! It handles all the heavy lifting
+ * for our book inventory, including looking up books, adding new ones, updating details,
+ * and keeping track of stock levels.
  */
 @Service
 public class BookService {
@@ -34,11 +35,13 @@ public class BookService {
     private CategoryRepository categoryRepository;
 
     /**
-     * Get a paginated list of all books, optionally filtered by category.
-     * @param page page number (0-indexed)
-     * @param size page size
-     * @param categoryId optional category filter
-     * @return page of BookResponse DTOs
+     * Browses the bookstore's collection, returning a specific "page" of books.
+     *  If a category ID is provided, it narrows down the search to just that genre.
+     *
+     * @param page which page of the catalogue to view (heads up: it's 0-indexed!)
+     * @param size how many books to display per page
+     * @param categoryId the specific genre to filter by (can be null for all books)
+     * @return a neatly packaged page of book summaries ready for the frontend
      */
     public Page<BookResponse> getAllBooks(int page, int size, Long categoryId) {
         log.debug("Entering getAllBooks: page={}, size={}, categoryId={}", page, size, categoryId);
@@ -55,10 +58,11 @@ public class BookService {
     }
 
     /**
-     * Get a single book by its ID.
-     * @param id the book ID
-     * @return BookResponse DTO
-     * @throws ResourceNotFoundException if the book doesn't exist
+     * Hunts down a specific book in our database using its unique database ID.
+     *
+     * @param id the unique identifier for the book you're looking for
+     * @return the full details of the book
+     * @throws ResourceNotFoundException if we check the shelves and it's simply not there
      */
     public BookResponse getBookById(Long id) {
         log.debug("Entering getBookById: id={}", id);
@@ -68,11 +72,13 @@ public class BookService {
     }
 
     /**
-     * Search books by title, author, or ISBN.
-     * @param query the search query
-     * @param page page number
-     * @param size page size
-     * @return page of matching BookResponse DTOs
+     * Performs a text search across our inventory. It checks book titles,
+     * author names, and even ISBN numbers to find the best match for the user's query.
+     *
+     * @param query what the user is typing into the search bar
+     * @param page which page of results to show
+     * @param size how many results per page
+     * @return a list of books that match the search term
      */
     public Page<BookResponse> searchBooks(String query, int page, int size) {
         log.debug("Entering searchBooks: query={}", query);
@@ -82,10 +88,13 @@ public class BookService {
     }
 
     /**
-     * Create a new book.
-     * @param request the book details
-     * @return created BookResponse DTO
-     * @throws ValidationException if ISBN already exists
+     * Adds a brand new title to our bookstore's inventory!
+     * It performs a quick check to make sure we don't accidentally add the exact same
+     * physical book (via ISBN) twice.
+     *
+     * @param request the details of the new book from the admin panel
+     * @return the freshly saved book details, including its new database ID
+     * @throws ValidationException if a book with the same ISBN already lives in our system
      */
     @Transactional
     public BookResponse createBook(BookRequest request) {
@@ -107,10 +116,12 @@ public class BookService {
     }
 
     /**
-     * Update an existing book.
-     * @param id the book ID
-     * @param request the updated book details
-     * @return updated BookResponse DTO
+     * Applies edits to an existing book in our system. Useful for changing prices,
+     * fixing typos in descriptions, or updating stock counts when a new shipment arrives.
+     *
+     * @param id the ID of the book being edited
+     * @param request the new details to apply
+     * @return the officially updated book details
      */
     @Transactional
     public BookResponse updateBook(Long id, BookRequest request) {
@@ -135,8 +146,11 @@ public class BookService {
     }
 
     /**
-     * Delete a book by its ID.
-     * @param id the book ID
+     * Permanently removes a book from our catalogue.
+     * Note: In a real-world system, you might prefer to do a "soft delete" (mark as inactive)
+     * instead of permanently erasing it, especially if it's tied to past orders!
+     *
+     * @param id the ID of the book to remove
      */
     @Transactional
     public void deleteBook(Long id) {

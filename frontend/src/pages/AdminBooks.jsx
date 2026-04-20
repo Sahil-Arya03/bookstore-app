@@ -1,138 +1,83 @@
 import { useState, useEffect } from 'react';
 import bookService from '../services/bookService';
 import categoryService from '../services/categoryService';
-import BookForm from '../components/BookForm';
-import Spinner from '../components/Spinner';
 import { formatCurrency } from '../utils/formatCurrency';
+import BookForm from '../components/BookForm';
 
-/**
- * Admin page for managing books (CRUD operations).
- */
-const AdminBooks = () => {
+function AdminBooks() {
   const [books, setBooks] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
-  const [saving, setSaving] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useEffect(() => { loadData(); }, []);
 
   const loadData = () => {
-    setLoading(true);
-    Promise.all([bookService.getBooks(0, 100), categoryService.getCategories()])
-      .then(([booksRes, catRes]) => {
-        setBooks(booksRes.data.content);
-        setCategories(catRes.data);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    bookService.getBooks(0, 100).then(res => setBooks(res.data.content));
+    categoryService.getCategories().then(res => setCategories(res.data));
   };
 
-  const handleSubmit = async (data) => {
-    setSaving(true);
+  const handleSave = async (data) => {
     try {
-      if (editingBook) {
-        await bookService.updateBook(editingBook.id, data);
-      } else {
-        await bookService.createBook(data);
-      }
+      if (editingBook) await bookService.updateBook(editingBook.id, data);
+      else await bookService.createBook(data);
       setShowForm(false);
       setEditingBook(null);
       loadData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to save book');
-    } finally {
-      setSaving(false);
+      alert('Failed to save book');
     }
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this book?')) return;
-    try {
-      await bookService.deleteBook(id);
-      loadData();
-    } catch (err) {
-      alert(err.response?.data?.message || 'Failed to delete book');
-    }
+    if (!window.confirm('Delete this book?')) return;
+    try { await bookService.deleteBook(id); loadData(); } catch (err) { alert('Failed to delete'); }
   };
 
-  const handleEdit = (book) => {
-    setEditingBook(book);
-    setShowForm(true);
-  };
-
-  if (loading) return <Spinner />;
+  const handleEdit = (book) => { setEditingBook(book); setShowForm(true); };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-dark-900">Manage Books</h1>
-          <p className="text-dark-500 mt-1">{books.length} books in inventory</p>
-        </div>
-        <button onClick={() => { setEditingBook(null); setShowForm(true); }}
-          className="bg-primary-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-primary-700 transition-colors shadow-md">
-          + Add Book
-        </button>
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Manage Books</h1>
+        <button onClick={() => { setEditingBook(null); setShowForm(true); }} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Add Book</button>
       </div>
 
       {showForm && (
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6 border border-gray-100 animate-slide-up">
-          <h2 className="text-xl font-semibold text-dark-900 mb-4">
-            {editingBook ? 'Edit Book' : 'Add New Book'}
-          </h2>
-          <BookForm
-            book={editingBook}
-            categories={categories}
-            onSubmit={handleSubmit}
-            onCancel={() => { setShowForm(false); setEditingBook(null); }}
-            loading={saving}
-          />
+        <div className="bg-white p-6 border rounded mb-8">
+          <BookForm book={editingBook} categories={categories} onSubmit={handleSave} onCancel={() => { setShowForm(false); setEditingBook(null); }} />
         </div>
       )}
 
-      <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-gray-50 text-left text-dark-500 border-b border-gray-200">
-                <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3">Author</th>
-                <th className="px-4 py-3">ISBN</th>
-                <th className="px-4 py-3">Category</th>
-                <th className="px-4 py-3">Price</th>
-                <th className="px-4 py-3">Stock</th>
-                <th className="px-4 py-3">Actions</th>
+      <div className="bg-white border rounded">
+        <table className="w-full text-left">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="p-4 border-b">Title</th>
+              <th className="p-4 border-b">Author</th>
+              <th className="p-4 border-b">Price</th>
+              <th className="p-4 border-b">Stock</th>
+              <th className="p-4 border-b">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {books.map(book => (
+              <tr key={book.id} className="border-b hover:bg-gray-50">
+                <td className="p-4">{book.title}</td>
+                <td className="p-4">{book.author}</td>
+                <td className="p-4">{formatCurrency(book.price)}</td>
+                <td className="p-4">{book.stockQuantity}</td>
+                <td className="p-4 space-x-2">
+                  <button onClick={() => handleEdit(book)} className="text-blue-600 hover:underline">Edit</button>
+                  <button onClick={() => handleDelete(book.id)} className="text-red-600 hover:underline">Delete</button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {books.map(book => (
-                <tr key={book.id} className="border-b border-gray-50 hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 font-medium text-dark-900 max-w-[200px] truncate">{book.title}</td>
-                  <td className="px-4 py-3 text-dark-600">{book.author}</td>
-                  <td className="px-4 py-3 text-dark-500 text-xs font-mono">{book.isbn}</td>
-                  <td className="px-4 py-3"><span className="bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full text-xs font-medium">{book.categoryName}</span></td>
-                  <td className="px-4 py-3 font-semibold">{formatCurrency(book.price)}</td>
-                  <td className="px-4 py-3"><span className={`font-semibold ${book.stockQuantity > 0 ? 'text-green-600' : 'text-red-600'}`}>{book.stockQuantity}</span></td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-2">
-                      <button onClick={() => handleEdit(book)}
-                        className="text-primary-600 hover:bg-primary-50 px-2 py-1 rounded text-xs font-medium transition-colors">Edit</button>
-                      <button onClick={() => handleDelete(book.id)}
-                        className="text-red-600 hover:bg-red-50 px-2 py-1 rounded text-xs font-medium transition-colors">Delete</button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
-};
+}
 
 export default AdminBooks;
